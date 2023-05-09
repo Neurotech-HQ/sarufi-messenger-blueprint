@@ -1,5 +1,4 @@
 import os
-import requests
 import logging
 from pymessenger.bot import Bot
 from sarufi import Sarufi
@@ -15,9 +14,7 @@ load_dotenv()
 VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
 facebook=Bot(os.environ["page_access_token"] ,api_version=16.0)
-
 sarufi_bot=Sarufi(os.getenv("sarufi_api_key"))
-
 bot=sarufi_bot.get_bot(os.environ.get("sarufi_bot_id"))
 
 # Logging
@@ -55,10 +52,8 @@ def execute_actions(actions: dict, sender_id: str):
         "text": message,
         "quick_replies": buttons
           }
-
         facebook.send_message(recipient_id=sender_id,message=message_template)
-        
-          # pass
+
       elif action.get("send_images"):
         images=action.get("send_images")
         for image in images:
@@ -122,7 +117,6 @@ def hook():
 
     
     if data.get("message"):
-      
       message=data["message"].get("text")
       respond(sender_id,message)
 
@@ -131,18 +125,9 @@ def hook():
       respond(sender_id=sender_id,
               message=message_id,
               message_type="interactive")
-      
-  #   elif data["message"].get("attachments"):
-  #     facebook.send_text_message(message="File received ", recipient_id=sender_id)
-    
-  #   elif data["postback"]:
-  #     print(data)
-  #     print(data["posback"])
-    else:
-      print(data)
 
   return "ok"
 
 
 if __name__ == "__main__":
-    app.run(debug=True,port=5000)
+  app.run(debug=True,port=5000)

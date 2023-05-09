@@ -1,6 +1,6 @@
-# sarufi-messenger-blueprint
+# Sarufi messenger blueprint
 
-Starter code to integrating sarufi chatbot with Facebook messenger. In the blueprint, we need to set up a webhook to receive new messages. This can be done in many ways but we shall go through two ways namely [ngrok](https://ngrok.com) and [replit](https://replit.com).
+A starter code to integrate sarufi chatbot with Facebook messenger. In the blueprint, we need to set up a webhook to receive new messages. This can be done in many ways but we shall use two ways namely [ngrok](#using-ngrok) and [replit](#using-replit).
 
 ## Messenger set-up
 
@@ -54,15 +54,15 @@ Steps
 
 5. Create .env file
 
-    We are going to keep our credentials in `.env` file. You can use either a text editor or command line to creat it.
+    We are going to keep our credentials in `.env` file. You can use either a text editor or command line to creat it. With messenger page access token, we covered it previously. Then for sarufi api key, just follow this to [get sarufi credentials](#getting-sarufi-credentials)
 
     In the file, we are going to add the following
 
-    |Key | Description|
-    |---| ---|
-    |saruf_api_key| Your sarufi API key|
-    |page_access_token| Your facebook page token|
-    |sarufi_bot_id| Id of bot to be deployed|
+    ```bash
+    sarufi_api_key=Your sarufi API key
+    page_access_token = Your facebook page token
+    sarufi_bot_id= Id of bot to be deployed
+    ```
 
 6. Run main.py and set ngrok
 
@@ -100,10 +100,56 @@ Steps
 
 ### Using replit
 
+Way to go
+
+- Log into your [Replit](https://replit.com/) account.
+
+  Fork the repo [Sarufi bot deployed on messenger](https://replit.com/@neurotechafrica/sarufi-messenger-blueprint) into your account.
+
+  Navigate to `Tools`--> `Secrets` to create environment variables. We have discussed on how to get page access token at introduction part where as for sarufi view instructions here [get sarufi credentials](#getting-sarufi-credentials).
+
+     Create
+    |Key | Description|
+    |:---|:---|
+    |saruf_api_key| Your sarufi API key|
+    |page_access_token| Your facebook page token|
+    |sarufi_bot_id| Id of bot to be deployed|
+
+- Run the script
+
+    After creating the secret keys, run your `main.py`. A small webview window will open up with a url that looks like `https://{your repl name}.{your replit username}.repl.co`.
+
+    With the url, Navigate into your facebook developer account. On the webhooks section, click `messenger` >> `settings`.
+
+    ![messenger settings section](./img/messenger-settings-section.png)
+
+    Scroll down to webhook section of messenger, click `Add callback url`. Then paste the provided url into url section. Copy the `VERIFY_TOKEN`, paste it into verify token in messenger >> **Verify and save**.
+
+    ![Messenger webhook setup](./img/messenger-webhook-setup.png)
+
+- Webhook field subscription
+
+    We have to subscribe to webhook fields in order to receive messages sent by user. We shall subscribe to message and postback topic.
+
+- Final touches
+
+  We are reaching at a good point with the set-up. Open your messenger app/web, search for your page name. Send messages to it. The messages will be redirected to your bot. Here is the sample of our pizza bot deployed.
+
+## getting sarufi credentials
+
+To authorize our chabot, we are are going to use authorization keys from sarufi. Log in into your [sarufi account](https://sarufi.io). Go to your Profile to get API key.
+
+![Sarufi API key](./img/sarufi_authorization.png)
+
+## Pizza Bot test
+
+With a bot deployed in messenger, here is a sample of a pizza bot.
+
+![Bot deployed in messenger](./img/messenger-bot.gif)
 
 ## Issues
 
-If you will face any issue, please raise one so as we can fix it as soon as possible
+If you will face any issue, please raise one so as we can fix it as soon as possible.
 
 ## Contribution
 

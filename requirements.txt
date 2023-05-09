@@ -1,0 +1,4 @@
+sarufi==0.1.4
+pymessenger==0.0.7.0
+Flask==2.2.2
+python-dotenv==0.21.0

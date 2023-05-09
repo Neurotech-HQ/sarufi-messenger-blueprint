@@ -1,7 +1,6 @@
 import os
 import requests
 import logging
-from replit import web
 from pymessenger.bot import Bot
 from sarufi import Sarufi
 from dotenv import load_dotenv
@@ -17,8 +16,7 @@ VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
 facebook=Bot(os.environ["page_access_token"] ,api_version=16.0)
 
-sarufi_bot=Sarufi(client_id=os.environ.get("sarufi_client_id"),
-                  client_secret=os.environ.get("sarufi_client_secret"))
+sarufi_bot=Sarufi(os.getenv("sarufi_api_key"))
 
 bot=sarufi_bot.get_bot(os.environ.get("sarufi_bot_id"))
 
@@ -37,20 +35,14 @@ def execute_actions(actions: dict, sender_id: str):
         message = action.get("send_message")
         if isinstance(message, list):
           message = "\n".join(message)
-        facebook.send_text_message(message=message, 
-                                   recipient_id=sender_id)
+        facebook.send_text_message(message=message,recipient_id=sender_id)
     
       if action.get("send_reply_button"):
         message=action["send_reply_button"]["body"]["text"]
         buttons=action["send_reply_button"]["action"]['buttons']
-        buttons=[{"type":"postback",
-                  "title":button["reply"]["title"],
-                  "payload":button["reply"]["id"]}  
-                 for button in buttons ]
+        buttons=[{"type":"postback","title":button["reply"]["title"],"payload":button["reply"]["id"]} for button in buttons ]
 
-        facebook.send_button_message(text=message,
-                                     buttons=buttons, 
-                                     recipient_id=sender_id)
+        facebook.send_button_message(text=message,buttons=buttons,recipient_id=sender_id)
   
       if action.get("send_button"):
         actions=action.get("send_button")
@@ -59,12 +51,12 @@ def execute_actions(actions: dict, sender_id: str):
         buttons=[{"content_type": "text","title": button["title"],
             "payload": button["id"]} for button in buttons]
         
-        message = {
+        message_template = {
         "text": message,
         "quick_replies": buttons
           }
 
-        facebook.send_message(recipient_id=sender_id,message=message)
+        facebook.send_message(recipient_id=sender_id,message=message_template)
         
           # pass
       elif action.get("send_images"):
@@ -92,7 +84,6 @@ def execute_actions(actions: dict, sender_id: str):
           facebook.send_audio_url(sender_id,audio_url=link)
   
       else:
-        # print(action)
         logging.info("The message type is not supported by now")
   
 
@@ -122,9 +113,8 @@ def hook():
 
   # Handle Webhook Subscriptions
   data = request.get_json()
-  # logging.info("Received webhook data: %s", data)
+  logging.info("Received webhook data: %s", data)
   data_received = data['entry'][0]
-  # print(data_received)
 
   if data_received.get("messaging"):
     data=data_received['messaging'][0]
@@ -138,7 +128,6 @@ def hook():
 
     elif data["postback"]:
       message_id=(data["postback"]["payload"])
-      # print(message_id)
       respond(sender_id=sender_id,
               message=message_id,
               message_type="interactive")
@@ -156,4 +145,4 @@ def hook():
 
 
 if __name__ == "__main__":
-    web.run(app,debug=True)
+    app.run(debug=True,port=5000)

@@ -92,7 +92,7 @@ Steps
 
 8. webhook field subscription
 
-    We have to subscribe to webhook fields in order to receive messages sent by user. We shall subscribe to message and postback topic.
+    We have to subscribe to webhook fields in order to receive messages sent by user. We shall subscribe to `messages` and `messaging_postback` topic.
 
 9. Test your bot
 
@@ -129,7 +129,7 @@ Way to go
 
 - Webhook field subscription
 
-    We have to subscribe to webhook fields in order to receive messages sent by user. We shall subscribe to message and postback topic.
+    We have to subscribe to webhook fields in order to receive messages sent by user. We shall subscribe to `messages` and `messaging_postback` topic.
 
 - Final touches
 

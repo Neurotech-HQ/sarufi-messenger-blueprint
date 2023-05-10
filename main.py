@@ -13,7 +13,10 @@ load_dotenv()
 
 VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
-facebook=Bot(os.environ["page_access_token"] ,api_version=16.0)
+# facebook messenger object 
+facebook=Bot(os.getenv("page_access_token") ,api_version=16.0)
+
+# sarufi object
 sarufi_bot=Sarufi(os.getenv("sarufi_api_key"))
 bot=sarufi_bot.get_bot(os.environ.get("sarufi_bot_id"))
 

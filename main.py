@@ -4,9 +4,10 @@ from pymessenger.bot import Bot
 from sarufi import Sarufi
 from dotenv import load_dotenv
 from flask import Flask, request, make_response
+from fastapi import FastAPI,Response, Request,BackgroundTasks
 
 # Initialize Flask App
-app = Flask(__name__)
+app = FastAPI()
 
 # Load .env file
 load_dotenv()
@@ -14,11 +15,11 @@ load_dotenv()
 VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
 # facebook messenger object 
-facebook=Bot(os.getenv("page_access_token") ,api_version=16.0)
+facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)
 
 # sarufi object
-sarufi_bot=Sarufi(os.getenv("sarufi_api_key"))
-bot=sarufi_bot.get_bot(os.environ.get("sarufi_bot_id"))
+sarufi_bot=Sarufi(os.getenv("SARUFI_API_KEY"))
+bot=sarufi_bot.get_bot(os.getenv("SARUFI_BOT_ID"))
 
 # Logging
 logging.basicConfig(
@@ -97,8 +98,8 @@ def respond(sender_id: str, message: str, message_type: str = "text"):
   return execute_actions(response,sender_id)
   
 
-@app.route("/", methods=["GET", "POST"])
-def hook():
+@app.get("/")
+async def webhook_verification(request: Request):
   if request.method == "GET":
     if request.args.get("hub.verify_token") == VERIFY_TOKEN:
       logging.info("Verified webhook")
@@ -109,8 +110,11 @@ def hook():
     logging.error("Webhook Verification failed")
     return "Invalid verification token"
 
+
+@app.post("/")
+async def webhook_handler(request: Request,tasks:BackgroundTasks):
   # Handle Webhook Subscriptions
-  data = request.get_json()
+  data = await request.json()
   logging.info("Received webhook data: %s", data)
   data_received = data['entry'][0]
 
@@ -121,11 +125,11 @@ def hook():
     
     if data.get("message"):
       message=data["message"].get("text")
-      respond(sender_id,message)
+      tasks.add_task(respond,sender_id,message)
 
     elif data["postback"]:
       message_id=(data["postback"]["payload"])
-      respond(sender_id=sender_id,
+      tasks.add_task(respond,sender_id=sender_id,
               message=message_id,
               message_type="interactive")
 

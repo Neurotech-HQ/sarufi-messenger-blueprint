@@ -2,3 +2,4 @@ sarufi==0.1.7
 pymessenger==0.0.7.0
 fastapi==0.97.0
 python-dotenv==0.21.0
+uvicorn==0.22.0

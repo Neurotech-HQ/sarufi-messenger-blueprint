@@ -1,9 +1,9 @@
 import os
+import uvicorn
 import logging
-from pymessenger.bot import Bot
 from sarufi import Sarufi
 from dotenv import load_dotenv
-from flask import Flask, request, make_response
+from pymessenger.bot import Bot
 from fastapi import FastAPI,Response, Request,BackgroundTasks
 
 # Initialize Flask App
@@ -102,10 +102,9 @@ def respond(sender_id: str, message: str, message_type: str = "text"):
 async def webhook_verification(request: Request):
   if request.method == "GET":
     if request.args.get("hub.verify_token") == VERIFY_TOKEN:
+      content=request.query_params.get("hub.challenge")
       logging.info("Verified webhook")
-      response = make_response(request.args.get("hub.challenge"), 200)
-      response.mimetype = "text/plain"
-      return response
+      return Response(content=content, media_type="text/plain", status_code=200)
 
     logging.error("Webhook Verification failed")
     return "Invalid verification token"
@@ -137,4 +136,4 @@ async def webhook_handler(request: Request,tasks:BackgroundTasks):
 
 
 if __name__ == "__main__":
-  app.run(debug=True,port=5000)
+  uvicorn.run("main:app",port=5000,reload=True)

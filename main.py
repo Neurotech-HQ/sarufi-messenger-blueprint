@@ -6,13 +6,15 @@ from dotenv import load_dotenv
 from pymessenger.bot import Bot
 from fastapi import FastAPI,Response, Request,BackgroundTasks
 
+
+VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
+PORT= int(os.getenv("PORT", 5000))
+
 # Initialize Flask App
 app = FastAPI()
 
 # Load .env file
 load_dotenv()
-
-VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
 
 # facebook messenger object 
 facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)
@@ -100,6 +102,9 @@ def respond(sender_id: str, message: str, message_type: str = "text"):
 
 @app.get("/")
 async def webhook_verification(request: Request):
+  """
+  Handle webhook verification from Facebook Messenger
+  """
   if request.method == "GET":
     if request.args.get("hub.verify_token") == VERIFY_TOKEN:
       content=request.query_params.get("hub.challenge")
@@ -112,7 +117,9 @@ async def webhook_verification(request: Request):
 
 @app.post("/")
 async def webhook_handler(request: Request,tasks:BackgroundTasks):
-  # Handle Webhook Subscriptions
+  """
+  Handle webhook events from Facebook Messenger
+  """
   data = await request.json()
   logging.info("Received webhook data: %s", data)
   data_received = data['entry'][0]
@@ -124,16 +131,17 @@ async def webhook_handler(request: Request,tasks:BackgroundTasks):
     
     if data.get("message"):
       message=data["message"].get("text")
-      tasks.add_task(respond,sender_id,message)
+      tasks.add_task(respond,sender_id=sender_id,message=message)
 
-    elif data["postback"]:
+    elif data.get("postback"):
       message_id=(data["postback"]["payload"])
-      tasks.add_task(respond,sender_id=sender_id,
-              message=message_id,
-              message_type="interactive")
+      tasks.add_task(respond,
+                     sender_id=sender_id,
+                     message=message_id,
+                     message_type="interactive")
 
-  return "ok"
+  return Response(content="ok",status_code=200)
 
 
 if __name__ == "__main__":
-  uvicorn.run("main:app",port=5000,reload=True)
+  uvicorn.run("main:app",port=PORT,reload=True)

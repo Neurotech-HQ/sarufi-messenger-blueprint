@@ -64,7 +64,7 @@ Steps
     SARUFI_BOT_ID= Id of bot to be deployed
     ```
 
-    You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number will be used -> *5000* .
+    You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number, *5000* will be used.
 
 6. Run main.py and set ngrok
 

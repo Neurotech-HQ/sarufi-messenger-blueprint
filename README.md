@@ -59,10 +59,12 @@ Steps
     In the file, we are going to add the following
 
     ```bash
-    sarufi_api_key=Your sarufi API key
-    page_access_token = Your facebook page token
-    sarufi_bot_id= Id of bot to be deployed
+    SARUFI_API_KEY=Your sarufi API key
+    PAGE_ACCESS_TOKEN = Your facebook page token
+    SARUFI_BOT_ID= Id of bot to be deployed
     ```
+
+    You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number, *5000* will be used.
 
 6. Run main.py and set ngrok
 
@@ -111,9 +113,9 @@ Way to go
      Create
     |Key | Description|
     |:---|:---|
-    |saruf_api_key| Your sarufi API key|
-    |page_access_token| Your facebook page token|
-    |sarufi_bot_id| Id of bot to be deployed|
+    |SARUFI_API_KEY| Your sarufi API key|
+    |PAGE_ACCESS_TOKEN| Your facebook page token|
+    |SARUFI_BOT_ID| Id of bot to be deployed|
 
 - Run the script
 

@@ -106,7 +106,8 @@ async def webhook_verification(request: Request):
   Handle webhook verification from Facebook Messenger
   """
   if request.method == "GET":
-    if request.args.get("hub.verify_token") == VERIFY_TOKEN:
+      if request.query_params.get("hub.verify_token") == VERIFY_TOKEN:
+    # if request.args.get("hub.verify_token") == VERIFY_TOKEN:
       content=request.query_params.get("hub.challenge")
       logging.info("Verified webhook")
       return Response(content=content, media_type="text/plain", status_code=200)

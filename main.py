@@ -7,14 +7,14 @@ from pymessenger.bot import Bot
 from fastapi import FastAPI,Response, Request,BackgroundTasks
 
 
-VERIFY_TOKEN = "30cca545-3838-48b2-80a7-9e43b1ae8ce4"
-PORT= int(os.getenv("PORT", 5000))
-
 # Initialize Flask App
 app = FastAPI()
 
 # Load .env file
 load_dotenv()
+
+VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
+PORT= int(os.getenv("PORT", 5000))
 
 # facebook messenger object 
 facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)

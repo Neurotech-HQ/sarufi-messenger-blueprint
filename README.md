@@ -62,9 +62,12 @@ Steps
     SARUFI_API_KEY=Your sarufi API key
     PAGE_ACCESS_TOKEN = Your facebook page token
     SARUFI_BOT_ID= Id of bot to be deployed
+    VERIFY_TOKEN = A random string to be used as verification token
     ```
 
     You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number, *5000* will be used.
+
+    A `VERIFY TOKEN` is a random string that you will use to verify that the request is coming from Facebook. You can use any random string, but make sure you keep track of it because you will need to use the same string when we are setting up the webhook.
 
 6. Run main.py and set ngrok
 
@@ -116,6 +119,9 @@ Way to go
     |SARUFI_API_KEY| Your sarufi API key|
     |PAGE_ACCESS_TOKEN| Your facebook page token|
     |SARUFI_BOT_ID| Id of bot to be deployed|
+    |VERIFY_TOKEN| A random string to be used as verification token|
+
+    A `VERIFY TOKEN` is a random string that you will use to verify that the request is coming from Facebook. You can use any random string, but make sure you keep track of it because you will need to use the same string when we are setting up the webhook.
 
 - Run the script
 

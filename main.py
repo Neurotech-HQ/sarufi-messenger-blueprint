@@ -13,8 +13,19 @@ app = FastAPI()
 # Load .env file
 load_dotenv()
 
+# Make sure all required environment variables are set
+if not os.getenv("PAGE_ACCESS_TOKEN"):
+  raise ValueError("PAGE_ACCESS_TOKEN not set")
+if not os.getenv("VERIFY_TOKEN"):
+  raise ValueError("VERIFY_TOKEN not set")
+if not os.getenv("SARUFI_API_KEY"):
+  raise ValueError("SARUFI_API_KEY not set")
+if not os.getenv("SARUFI_BOT_ID"):
+  raise ValueError("SARUFI_BOT_ID not set")
+
+
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
-PORT= int(os.getenv("PORT", 5000))
+PORT= int(os.getenv("PORT", 8000))
 
 # facebook messenger object 
 facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)
@@ -158,4 +169,4 @@ async def webhook_handler(request: Request,tasks:BackgroundTasks):
 
 
 if __name__ == "__main__":
-  uvicorn.run("main:app",port=PORT,reload=True)
+  uvicorn.run("main:app",port=PORT)

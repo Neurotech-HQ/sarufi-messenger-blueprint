@@ -14,18 +14,18 @@ app = FastAPI()
 load_dotenv()
 
 # Make sure all required environment variables are set
-if not os.getenv("PAGE_ACCESS_TOKEN"):
+if os.getenv("PAGE_ACCESS_TOKEN") is None:
   raise ValueError("PAGE_ACCESS_TOKEN not set")
-if not os.getenv("VERIFY_TOKEN"):
+if os.getenv("VERIFY_TOKEN") is None:
   raise ValueError("VERIFY_TOKEN not set")
-if not os.getenv("SARUFI_API_KEY"):
+if os.getenv("SARUFI_API_KEY") is None:
   raise ValueError("SARUFI_API_KEY not set")
-if not os.getenv("SARUFI_BOT_ID"):
+if os.getenv("SARUFI_BOT_ID") is None:
   raise ValueError("SARUFI_BOT_ID not set")
 
 
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
-PORT= int(os.getenv("PORT", 8000))
+PORT= os.getenv("PORT", 8000)
 
 # facebook messenger object 
 facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)

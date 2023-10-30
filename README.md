@@ -65,9 +65,9 @@ Steps
     VERIFY_TOKEN = A random string to be used as verification token
     ```
 
-    You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number, *5000* will be used.
+    You can add optional variable `PORT` to specify the port number to be used. If you don't specify it, the default port number, *8000* will be used.
 
-    A `VERIFY TOKEN` is a random string that you will use to verify that the request is coming from Facebook. You can use any random string, but make sure you keep track of it because you will need to use the same string when we are setting up the webhook.
+    A `VERIFY TOKEN` is a random string that you will use to verify that the request is coming from Facebook. You can use any random string, but make sure you keep it because you will need to use the same string when we are setting up the webhook.
 
 6. Run main.py and set ngrok
 
@@ -80,7 +80,7 @@ Steps
     - Start ngrok
 
         ```bash
-        ./ngrok http 5000
+        ./ngrok http 8000
         ```
 
     **`Note:`** Keep the port number the same as used in `main.py`.

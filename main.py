@@ -4,15 +4,17 @@ import logging
 from sarufi import Sarufi
 from dotenv import load_dotenv
 from pymessenger.bot import Bot
-from mangum import Mangum
 from fastapi import FastAPI,Response, Request,BackgroundTasks
+from mangum import Mangum
 
+
+# Load .env file
+load_dotenv('.env')
 
 # Initialize Flask App
 app = FastAPI()
 handler = Mangum(app)
-# Load .env file
-load_dotenv()
+
 
 # Make sure all required environment variables are set
 if os.getenv("PAGE_ACCESS_TOKEN") is None:

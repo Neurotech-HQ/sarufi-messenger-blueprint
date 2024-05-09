@@ -4,12 +4,13 @@ import logging
 from sarufi import Sarufi
 from dotenv import load_dotenv
 from pymessenger.bot import Bot
+from mangum import Mangum
 from fastapi import FastAPI,Response, Request,BackgroundTasks
 
 
 # Initialize Flask App
 app = FastAPI()
-
+handler = Mangum(app)
 # Load .env file
 load_dotenv()
 
@@ -27,7 +28,7 @@ if os.getenv("SARUFI_BOT_ID") is None:
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN")
 PORT= os.getenv("PORT", 8000)
 
-# facebook messenger object 
+# facebook messenger object
 facebook=Bot(os.getenv("PAGE_ACCESS_TOKEN") ,api_version=16.0)
 
 # sarufi object
@@ -122,7 +123,7 @@ def respond(sender_id: str, message: str, message_type: str = "text"):
     return execute_actions(response,sender_id)
   except Exception as error:
     logging.error(f"{error} in respond")
-  
+
 
 @app.get("/")
 async def webhook_verification(request: Request):
